@@ -11,7 +11,6 @@ export type Database = {
     Tables: {
       event: {
         Row: {
-          created_at: string
           date_start: string | null
           description: string | null
           id: number
@@ -23,6 +22,7 @@ export type Database = {
           description?: string | null
           id?: number
           title?: string | null
+          user_id?: string
         }
         Update: {
           created_at?: string
