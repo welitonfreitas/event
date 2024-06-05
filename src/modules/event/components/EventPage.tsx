@@ -93,6 +93,11 @@ const Event = () => {
                         <span>28 de Julho de 2023</span> - 
                         <span className="px-1">Morada Nova-CE</span>
                     </div>
+                    <div className="text-xs font-medium">
+                        <span>Organizador</span> - 
+                        <span className="px-1">Onilto Silva</span>
+                    </div>
+                    
                     <div className="py-1 text-xl font-bold">Sobre o evento</div>
                     <div className="text-justify">Venha com a gente explorar todo o potencial que as trilhas de eusébio tem a oferecer. Uma prova criada para explorar o máximo que as trilhas da região a oferecer, junto com uma estrutura de ultima geração pensando para oferecer o melhor do mundo do ciclismo para que todos os ciclistas se sintam em casa</div>
                 </div>
