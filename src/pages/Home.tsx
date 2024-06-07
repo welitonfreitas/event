@@ -1,16 +1,27 @@
 
 import { useEffect, useState } from "react"
 import { EventType } from "../types/collection"
-import { get_service } from "../modules/event/services/event"
-import { Link } from "react-router-dom"
+import { getOpenEvents, url_image } from "../modules/event/services/event"
+import EventComponent from "../modules/event/components/Event"
 
 const Home = () => {
 
     const [events, setEvent] = useState<EventType[]>([]);
 
     useEffect(() => {
-        get_service().then((data) => setEvent(data))
+        getOpenEvents(4).then((data) => {
+           
+                const dataProcessd = data.map((event: EventType) => {
+                    return url_image('event-banner', event.banner_url ?? 'sem_imagem').then((url) => { return {...event, banner_url: url.publicUrl} } )
+
+                })
+                Promise.all(dataProcessd).then((dataProcessd) => setEvent(dataProcessd))
+        })
     }, [])
+
+    useEffect(() => {
+       
+    },[])
 
     const homebanner = <div>
         <div className="flex text-fuchsia-500 font-bold">
@@ -27,30 +38,7 @@ const Home = () => {
 
     </div>
 
-    const eventComponent = (event:any) => {
-    
-    return (
-            <a href={`/event/${event.id}`}>
-                <div className="flex flex-col gap-2">
-                    <div className="h-52 w-56 border-2 p-">
-                        imagem
-                    </div>
-                    <div>
-                        <div className="flex flex-row gap-2 text-sm">
-                            <span className="rounded-md border-2 px-2">abertas</span>
-                            <span className="rounded-md border-2 px-2">1 lote</span>
-                        </div>
-                        <div className="text-xl font-semibold">
-                            {event.title}
-                        </div>
-                        <div className="text-xs">
-                            Morada Nova-CE - 23 de maio de 2024
-                        </div>
-                    </div>
-                </div>
-            </a>
-        )
-    }
+
 
     return (
             <>
@@ -59,9 +47,9 @@ const Home = () => {
                 <div className="text-4xl py-4">
                     Próximos Eventos
                 </div>
-                <div className="flex flex-col">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {events.map((event) => (
-                        eventComponent(event)
+                        <EventComponent event={event}/>
                     ))}
                 </div>
 

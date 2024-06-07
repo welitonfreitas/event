@@ -18,7 +18,11 @@ const BrowserLayout = () => {
                     {!session ? 
                         < Link to="/login" >LOGIN</Link>
                     : 
-                        <a onClick={logOut} >LOGOUT</a>}
+                        <div>
+                            <Link to="/profile" >Perfil</Link>
+                            <a onClick={logOut} >LOGOUT</a>
+                        </div>
+                    }
                     <Link to="/event/new" className="bg-green-600 p-2 text-white rounded-sm hidden" >Criar Evento</Link>
                 </div>
             </header>

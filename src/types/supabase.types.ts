@@ -47,8 +47,8 @@ export type Database = {
       }
       event: {
         Row: {
-          anddress_full: string | null
-          anddress_short: string | null
+          address_full: string | null
+          address_short: string | null
           banner_url: string | null
           created_at: string
           description: string | null
@@ -61,8 +61,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          anddress_full?: string | null
-          anddress_short?: string | null
+          address_full?: string | null
+          address_short?: string | null
           banner_url?: string | null
           created_at?: string
           description?: string | null
@@ -75,8 +75,8 @@ export type Database = {
           user_id: string
         }
         Update: {
-          anddress_full?: string | null
-          anddress_short?: string | null
+          address_full?: string | null
+          address_short?: string | null
           banner_url?: string | null
           created_at?: string
           description?: string | null
@@ -138,6 +138,7 @@ export type Database = {
           price: number | null
           quantity: number | null
           start_date: string | null
+          status: Database["public"]["Enums"]["lots_status"] | null
           title: string | null
         }
         Insert: {
@@ -149,6 +150,7 @@ export type Database = {
           price?: number | null
           quantity?: number | null
           start_date?: string | null
+          status?: Database["public"]["Enums"]["lots_status"] | null
           title?: string | null
         }
         Update: {
@@ -160,6 +162,7 @@ export type Database = {
           price?: number | null
           quantity?: number | null
           start_date?: string | null
+          status?: Database["public"]["Enums"]["lots_status"] | null
           title?: string | null
         }
         Relationships: [
@@ -172,6 +175,74 @@ export type Database = {
           },
         ]
       }
+      profile: {
+        Row: {
+          address: string | null
+          birth_date: string | null
+          blod_type: Database["public"]["Enums"]["bloder_type"] | null
+          city: string | null
+          complement: string | null
+          cpf: string | null
+          created_at: string
+          gender: Database["public"]["Enums"]["gender_type"] | null
+          id: string
+          name: string | null
+          neighborhood: string | null
+          number: string | null
+          phone: string | null
+          phone_emergency: string | null
+          state: string | null
+          team: string | null
+          zip_code: string | null
+        }
+        Insert: {
+          address?: string | null
+          birth_date?: string | null
+          blod_type?: Database["public"]["Enums"]["bloder_type"] | null
+          city?: string | null
+          complement?: string | null
+          cpf?: string | null
+          created_at?: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          id: string
+          name?: string | null
+          neighborhood?: string | null
+          number?: string | null
+          phone?: string | null
+          phone_emergency?: string | null
+          state?: string | null
+          team?: string | null
+          zip_code?: string | null
+        }
+        Update: {
+          address?: string | null
+          birth_date?: string | null
+          blod_type?: Database["public"]["Enums"]["bloder_type"] | null
+          city?: string | null
+          complement?: string | null
+          cpf?: string | null
+          created_at?: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          id?: string
+          name?: string | null
+          neighborhood?: string | null
+          number?: string | null
+          phone?: string | null
+          phone_emergency?: string | null
+          state?: string | null
+          team?: string | null
+          zip_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -180,9 +251,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      bloder_type: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-"
       difficulty_level: "beginner" | "intermediate" | "advanced"
       event_status: "draft" | "published" | "canceled" | "finished"
       gender: "male" | "female" | "mixed"
+      gender_type: "male" | "female" | "other"
+      lots_status: "Aberto" | "Fechado" | "Cancelado" | "Esgotado"
     }
     CompositeTypes: {
       [_ in never]: never

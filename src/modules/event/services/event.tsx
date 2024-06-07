@@ -1,3 +1,4 @@
+import { QueryData, QueryResult } from "@supabase/supabase-js";
 import supabase from "../../../lib/supabase";
 import { CategoryEventInsert, EventType, EventTypeInsert } from "../../../types/collection";
 
@@ -5,6 +6,7 @@ export async function get_service() {
     const { data, error } = await supabase
         .from("event")
         .select("*")
+        .limit(10)
         .order("id", { ascending: false });
     if (error) {
         throw error;
@@ -12,30 +14,45 @@ export async function get_service() {
     return data;
 }
 
-export async function get_event(id: string) {
-    const { data, error} = await supabase
+export async function getOpenEvents(limite: number = 4) {
+    const { data, error } = await supabase
+        .from("event")
+        .select("*")
+        .eq("status", "published")
+        .order("id", { ascending: false })
+        .limit(limite);
+    if (error) {
+        throw error;
+    }
+    return data;
+}
+
+export async function get_event(id: string): Promise<EventType>{
+
+    const { data, error } = await supabase
         .from("event")
         .select(`
         *
         ,lots (
-            id,
-            title,
-            price,
-            start_date,
-            end_date,
-            quantity
+            *
         ),
         category(
             id,
-            description
+            description,
+            minimum_age,
+            maximum_age,
+            gender,
+            is_oficial,
+            difficulty_level
         )
         `)
-        .eq("id", id);
+        .eq("id", id).limit(1).single();
 
     if (error) {
         throw error;
     }
-    return data[0];
+
+    return data;
 }
 
 export async function create_event(event: EventTypeInsert) {
@@ -60,9 +77,17 @@ export async function upload_image(bucket: string, filename: string, file: File)
     return data;
 }
 
+export async function url_image(bucket: string, filename: string) {
+    const { data } = await supabase
+        .storage
+        .from(bucket)
+        .getPublicUrl(filename);
+    return data;
+}
+
 export async function create_event_categories(categoriesWithEventId: CategoryEventInsert[]) {
     const { data, error } = await supabase
-        .from("event_categories")
+        .from("event_category")
         .insert(categoriesWithEventId)
         .select();
     if (error) {

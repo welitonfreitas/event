@@ -4,11 +4,15 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 import supabase from '../lib/supabase'
 import { useAuth } from '../modules/auth/hooks/useAuth'
-import { Button } from '@mui/material'
+import { useLocation, useNavigate } from 'react-router-dom'
+import queryString from 'query-string';
+
 
 
 export default function Login() {
-    const { session, user, logOut } = useAuth()
+    const { session } = useAuth()
+    const location = useLocation();
+    const navigate = useNavigate()
     
     // useEffect(() => {
     //     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -28,11 +32,8 @@ export default function Login() {
         return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={['google']}  />)
     }
     else {
-        return (<>
-        <div>Logged in! </div>
-        <div>{user?.email}</div>
-            <Button onClick={logOut}>Sign Out</Button>
-        </>
-    )
+        const { redirecTo } = queryString.parse(location.search);
+        console.log(redirecTo)
+        navigate(redirecTo == null ? '/' : redirecTo as string)
     }
 }

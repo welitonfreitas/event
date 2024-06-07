@@ -9,6 +9,7 @@ import { get_categories } from "../services/categorie";
 import { EventTypeInsert, LotsInsert } from '../../../types/collection';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { create_lots } from '../services/lots';
+import { formatDate } from '../../../lib/formatters';
 
 
 
@@ -46,8 +47,8 @@ const EventForm = () => {
     const [_, setEventPostArt] = useState('' as string)
     const [eventPostArtFileName, setEventPostArtFileName] = useState('' as string)
     const [eventDate, setEventDate] = useState('' as string)
-    const [anddressShort, setAnddressShort] = useState('' as string)
-    const [anddressFull, setAnddressFull] = useState('' as string)
+    const [addressShort, setAddressShort] = useState('' as string)
+    const [addressFull, setAddressFull] = useState('' as string)
     //Categorias e extras
     const [categorySelected, setCategorySelected] = useState<selectedType[]>([]);
     const [extraSelected, setExtraSelected] = useState([]);
@@ -153,11 +154,11 @@ const EventForm = () => {
             setError('Data do evento não pode ser vazio')
             return
         }
-        if (anddressShort === '') {
+        if (addressShort === '') {
             setError('Endereço não pode ser vazio')
             return
         }
-        if (anddressFull === '') {
+        if (addressFull === '') {
             setError('Endereço completo não pode ser vazio')
             return
         }
@@ -182,8 +183,8 @@ const EventForm = () => {
         console.log(' Tile: ', title)
         console.log(' Description: ', description)
         console.log(' Event Date: ', eventDate)
-        console.log(' Anddress Short: ', anddressShort)
-        console.log(' Anddress Full: ', anddressFull)
+        console.log(' address Short: ', addressShort)
+        console.log(' address Full: ', addressFull)
         console.log(' Sponsors: ', sponsors)
         console.log(' Lotes: ', lotes)
         console.log(' Categories: ', categorySelected)
@@ -195,8 +196,8 @@ const EventForm = () => {
             description,
             banner_url: eventPostArtFileName ?? '',
             event_date: eventDate ?? '', 
-            anddress_short: anddressShort ?? '', 
-            anddress_full: anddressFull ?? '', 
+            address_short: addressShort ?? '', 
+            address_full: addressFull ?? '', 
             extras: JSON.stringify(extraSelected),
             sponsors: JSON.stringify(sponsors.map((sponsor) => { return {title: sponsor.name, logo_url: sponsor.filename}}))}, 
             lotes, 
@@ -261,8 +262,8 @@ const EventForm = () => {
                     <TextInput 
                         id="localization" 
                         placeholder="ex: Fortaleza-CE" 
-                        value={anddressShort}
-                        onChange={(event) => setAnddressShort(event.target.value)}
+                        value={addressShort}
+                        onChange={(event) => setAddressShort(event.target.value)}
                         required />
                 </div>
                 <div className="mb-5">
@@ -270,8 +271,8 @@ const EventForm = () => {
                     <TextInput 
                         id="localizationMap" 
                         placeholder="Ex: Jaçanaú, Maracanaú - CE, 61915-380" 
-                        value={anddressFull}
-                        onChange={(event) => setAnddressFull(event.target.value)}
+                        value={addressFull}
+                        onChange={(event) => setAddressFull(event.target.value)}
                         required 
                     />
                 </div>
@@ -284,9 +285,9 @@ const EventForm = () => {
                                     <div>{lote.title}</div>
                                     <div>R$ {lote.price}</div>
                                 </div>
-                                <div className="flex flex-row align-baseline gap-4">
-                                    <div>De: {lote.start_date}</div>
-                                    <div>Até: {lote.end_date}</div>
+                                <div className="flex flex-col align-baseline">
+                                    <div>De: {formatDate(lote.start_date, false)}</div>
+                                    <div>Até: {formatDate(lote.end_date, false)}</div>
                                 </div>
                             </div>
                         ))}

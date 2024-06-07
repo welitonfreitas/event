@@ -24,6 +24,7 @@
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.9.0",
     "framer-motion": "^11.1.7",
+    "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",

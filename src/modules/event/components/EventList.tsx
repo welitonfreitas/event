@@ -1,51 +1,36 @@
 import { useEffect, useState } from "react"
 import { EventType } from "../../../types/collection"
-import { get_service } from "../services/event"
-
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Grid from "@mui/material/Grid"
-import Item from "@mui/material/Grid"
+import { get_service, url_image } from "../services/event"
+import { Button } from "flowbite-react"; 
 
 import { Link } from "react-router-dom"
+import EventComponent from "./Event"
 
 const EventList = () => {
 
     const [events, setEvent] = useState<EventType[]>([]);
 
     useEffect(() => {
-        get_service().then((data) => setEvent(data))
+        get_service().then((data) => {
+            const dataProcessd = data.map((event: EventType) => {
+                return url_image('event-banner', event.banner_url ?? 'sem_imagem').then((url) => { return { ...event, banner_url: url.publicUrl } })
+
+            })
+            Promise.all(dataProcessd).then((dataProcessd) => setEvent(dataProcessd))
+        })
     }, [])
 
     return (
-        <Grid container spacing={3}>
-            {events.map((event) => (
-                <Item>
-                    <Card key={event.id}>
-                        <CardContent>
-                            <Typography sx={{ fontSize: 18 }} color="text.secondary" gutterBottom>
-                                {event.title}
-                            </Typography>
-
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                {event.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Link to={`/event/${event.id}`}>
-                                <Button variant="contained">Detalhes</Button>
-                            </Link>
-                        </CardActions>
-                    </Card>
-                </Item>
-            ))}
-            <Item>
-                <Button variant="contained" component={Link} to="/event/new">Adicionar</Button>
-            </Item>
-        </Grid>
+            <>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    {events.map((event) => (
+                        <EventComponent event={event} />
+                    ))}
+                </div>
+                <Button>
+                    <Link to="/event/new">Adicionar Novo Evento</Link>
+                </Button>
+            </>
     )
 }
 
