@@ -1,16 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import {  useEffect, useState } from 'react';
 import { MultiSelect } from "react-multi-select-component";
 import { Label, TextInput, Datepicker, Button } from "flowbite-react";
-import { v4 as uuidv4, validate } from "uuid";
-import { create_event, create_event_categories, upload_image } from '../services/event';
-import { get_categories } from "../services/categorie";
-import { EventTypeInsert, LotsInsert, Profile } from '../../../types/collection';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { create_lots } from '../services/lots';
 import { formatDate } from '../../../lib/formatters';
-import { get } from 'react-hook-form';
 import { get_profile, update_profile } from '../services/profile';
+import { Profile } from '../../../types/collection';
 
 
 export default function ProfilePage() {
@@ -49,6 +43,7 @@ export default function ProfilePage() {
                 get_profile(user.id).then((user) => {
                     setProfile(user)
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 ).catch((_) => {
                     setError('Erro ao carregar perfil')
                 })
@@ -137,6 +132,7 @@ export default function ProfilePage() {
 
     const updateProfile = () => {
         if (user) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             update_profile(profile).then((_) => {
                 setIsEdit(false)
                 alert("Perfil atualizado com sucesso")
@@ -209,7 +205,8 @@ export default function ProfilePage() {
                         closeOnChangedValue={true}
                         hasSelectAll={false}
                         labelledBy="Genero"
-                        onChange={(e) => setProfile({ ...profile, gender: e.length < 1 ? e[0].value : e[e.length - 1].value })}
+                        // @ts-expect-error xxx 
+                        onChange={(e: string | unknown[]) => setProfile({ ...profile, gender: e.length < 1 ? e[0].value : e[e.length - 1].value })}
                     />
                 </div>
                 <div className="mb-5">
@@ -222,6 +219,7 @@ export default function ProfilePage() {
                         hasSelectAll={false}
                         closeOnChangedValue={true}
                         labelledBy="Grupo Sanguinio"
+                        // @ts-expect-error xxx
                         onChange={(e) => setProfile({ ...profile, blod_type: e.length < 1 ? e[0].value : e[e.length - 1].value })}
                     />
                 </div>

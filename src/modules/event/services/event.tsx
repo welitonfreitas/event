@@ -1,4 +1,3 @@
-import { QueryData, QueryResult } from "@supabase/supabase-js";
 import supabase from "../../../lib/supabase";
 import { CategoryEventInsert, EventType, EventTypeInsert } from "../../../types/collection";
 

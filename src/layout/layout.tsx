@@ -6,7 +6,7 @@ import { useAuth } from "../modules/auth/hooks/useAuth"
 
 const BrowserLayout = () => {
 
-    const { session, user, logOut } = useAuth()
+    const { session, logOut } = useAuth()
     
     return (
         <>

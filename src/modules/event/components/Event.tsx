@@ -16,7 +16,7 @@ export default function EventComponent(props: { event: EventType; }) {
             <div className="items-center">
                 <Link to={`/event/${event.id}`}>
                     <div className="h-auto border-2">
-                        <img className='w-full' src={event.banner_url} />
+                        <img className='w-full' src={event.banner_url ?? ""} />
                     </div>
                     <div className="my-4">
                         <div className="flex flex-row gap-2 text-sm">

@@ -70,7 +70,7 @@ const EventForm = () => {
 
     //Lotes
     type loteType = {
-        evet_id?: number | null,
+        event_id?: number | null | undefined,
         title: string,
         start_date: string,
         end_date: string,
@@ -179,16 +179,7 @@ const EventForm = () => {
         //     return
         // }
         setError('')
-    
-        console.log(' Tile: ', title)
-        console.log(' Description: ', description)
-        console.log(' Event Date: ', eventDate)
-        console.log(' address Short: ', addressShort)
-        console.log(' address Full: ', addressFull)
-        console.log(' Sponsors: ', sponsors)
-        console.log(' Lotes: ', lotes)
-        console.log(' Categories: ', categorySelected)
-        console.log(' Extras: ', extraSelected)
+        
         
         createEvent({ 
             user_id: user.id,
@@ -200,7 +191,7 @@ const EventForm = () => {
             address_full: addressFull ?? '', 
             extras: JSON.stringify(extraSelected),
             sponsors: JSON.stringify(sponsors.map((sponsor) => { return {title: sponsor.name, logo_url: sponsor.filename}}))}, 
-            lotes, 
+            lotes.map((lote) => { return { title: lote.title, start_date: lote.start_date, end_date: lote.end_date, price: lote.price, event_id: 0 } }),
             categorySelected)
 
     }

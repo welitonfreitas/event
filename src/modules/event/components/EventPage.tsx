@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate, useParams } from "react-router-dom"
 import { get_event, url_image } from "../services/event"
 import { faMedal, faStar } from "@fortawesome/free-solid-svg-icons"
-import { CategoryEvent, EventType } from "../../../types/collection"
+import { CategoryEvent, EventType, Lots } from "../../../types/collection"
 import { formatDate, formatPrice } from "../../../lib/formatters"
 import { Button } from "flowbite-react"
 import { useAuth } from "../../auth/hooks/useAuth"
@@ -15,7 +15,7 @@ const Event = () => {
     const navigate = useNavigate()
     
     const { id } = useParams()
-    const { session, user } = useAuth()
+    const { session } = useAuth()
 
     const [event, setEvent] = useState<EventType>({} as EventType)
     const [eventBanner, setEventBanner] = useState<string>("")
@@ -38,6 +38,7 @@ const Event = () => {
         get_event(id as string).then((data) => {
             setEvent(data)
             url_image('event-banner', data.banner_url ?? 'sem_imagem').then((url) => setEventBanner(url.publicUrl))
+            // @ts-expect-error xxx
             setCategories(data.category)
             setMapsUrl(`https://www.google.com/maps?q=${data.address_full}&output=embed&z=15&hl=pt_BR`)
             if (data.extras)
@@ -70,7 +71,7 @@ const Event = () => {
         event && 
         <div className="flex flex-col gap-4">
             <div className="flex flex-1">
-                    <img className="" src={eventBanner} alt={event.title} />
+                    <img className="" src={eventBanner} alt={event.title ?? ''} />
             </div>
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="md:basis-3/4">
@@ -90,7 +91,7 @@ const Event = () => {
                 <div className=" p-4 rounded-sm item md:basis-2/4">
                     <div className="text-3xl font-bold text-center">INSCRIÇÕES</div>
                     <div className="flex flex-col gap-3 p-4">
-                            {event.lots && event.lots.map((lote) => (
+                            {event.lots && event.lots.map((lote: Lots) => (
                             <div className="p-3 flex flex-row justify-between rounded-md bg-gray-200 gap-2">
                                 <div>
                                     <div className="text-xl font-medium">{lote.title}</div>
@@ -100,7 +101,7 @@ const Event = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="text-xl font-bold ">{formatPrice(lote.price)}</div>
+                                    <div className="text-xl font-bold ">{formatPrice(lote.price ?? 0)}</div>
                                     {lote.status === "Aberto" ? (
                                         <div className="text-green-600 text-center border-green-600 border-2 rounded-md">{lote.status}</div>
                                     ):(
