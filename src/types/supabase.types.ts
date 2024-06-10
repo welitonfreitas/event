@@ -186,6 +186,7 @@ export type Database = {
           created_at: string
           gender: Database["public"]["Enums"]["gender_type"] | null
           id: string
+          level: Database["public"]["Enums"]["difficulty_level"] | null
           name: string | null
           neighborhood: string | null
           number: string | null
@@ -205,6 +206,7 @@ export type Database = {
           created_at?: string
           gender?: Database["public"]["Enums"]["gender_type"] | null
           id: string
+          level?: Database["public"]["Enums"]["difficulty_level"] | null
           name?: string | null
           neighborhood?: string | null
           number?: string | null
@@ -224,6 +226,7 @@ export type Database = {
           created_at?: string
           gender?: Database["public"]["Enums"]["gender_type"] | null
           id?: string
+          level?: Database["public"]["Enums"]["difficulty_level"] | null
           name?: string | null
           neighborhood?: string | null
           number?: string | null
@@ -243,6 +246,68 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          category_id: number
+          created_at: string
+          event_id: number
+          filename: string | null
+          id: number
+          lot_id: number
+          profile_id: string
+          status: Database["public"]["Enums"]["subscriptions_status"]
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          event_id: number
+          filename?: string | null
+          id?: number
+          lot_id: number
+          profile_id: string
+          status?: Database["public"]["Enums"]["subscriptions_status"]
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          event_id?: number
+          filename?: string | null
+          id?: number
+          lot_id?: number
+          profile_id?: string
+          status?: Database["public"]["Enums"]["subscriptions_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_lot_id_fkey"
+            columns: ["lot_id"]
+            isOneToOne: false
+            referencedRelation: "lots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -257,6 +322,7 @@ export type Database = {
       gender: "male" | "female" | "mixed"
       gender_type: "male" | "female" | "other"
       lots_status: "Aberto" | "Fechado" | "Cancelado" | "Esgotado"
+      subscriptions_status: "pending" | "approved" | "rejected" | "canceled"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -6,7 +6,7 @@ import { Button, FileInput, Label, Modal, TextInput, Textarea, Datepicker } from
 import { v4 as uuidv4 } from "uuid";
 import { create_event, create_event_categories, upload_image } from '../services/event';
 import { get_categories } from "../services/categorie";
-import { EventTypeInsert, LotsInsert } from '../../../types/collection';
+import { EventTypeInsert, LotsInsert, SelectedType } from '../../../types/collection';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { create_lots } from '../services/lots';
 import { formatDate } from '../../../lib/formatters';
@@ -19,12 +19,7 @@ const EventForm = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
 
-
-    type selectedType = {
-        label: string,
-        value: number
-    }
-    const [categories, setCategories] = useState<selectedType[]>([]);
+    const [categories, setCategories] = useState<SelectedType[]>([]);
 
     useEffect(() => {
         get_categories().then((data) => setCategories(data.map((categorie) => ({ label: categorie.description ?? '', value: categorie.id }))))
@@ -50,7 +45,7 @@ const EventForm = () => {
     const [addressShort, setAddressShort] = useState('' as string)
     const [addressFull, setAddressFull] = useState('' as string)
     //Categorias e extras
-    const [categorySelected, setCategorySelected] = useState<selectedType[]>([]);
+    const [categorySelected, setCategorySelected] = useState<SelectedType[]>([]);
     const [extraSelected, setExtraSelected] = useState([]);
     
 
@@ -85,7 +80,7 @@ const EventForm = () => {
     const [openModalLotes, setOpenModalLotes] = useState(false);
 
 
-    const createEvent = async (data: EventTypeInsert, lotes: LotsInsert[], categories: selectedType[]) => {
+    const createEvent = async (data: EventTypeInsert, lotes: LotsInsert[], categories: SelectedType[]) => {
 
         await create_event(data)
             .then((data) => {

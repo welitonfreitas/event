@@ -49,7 +49,7 @@ const Home = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {events.map((event) => (
-                        <EventComponent event={event}/>
+                        <EventComponent event={event} key={event.id}/>
                     ))}
                 </div>
 

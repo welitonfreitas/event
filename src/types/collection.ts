@@ -16,3 +16,12 @@ export type LotsUpdate = Database["public"]["Tables"]["lots"]["Update"]
 export type Profile = Database["public"]["Tables"]["profile"]["Row"]
 export type ProfileInsert = Database["public"]["Tables"]["profile"]["Insert"]
 export type ProfileUpdate = Database["public"]["Tables"]["profile"]["Update"]
+
+export type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"]
+export type SubscriptionInsert = Database["public"]["Tables"]["subscriptions"]["Insert"]
+export type SubscriptionUpdate = Database["public"]["Tables"]["subscriptions"]["Update"]
+
+export type SelectedType = {
+    label: string,
+    value: number
+}

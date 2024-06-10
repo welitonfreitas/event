@@ -1,5 +1,5 @@
 import supabase from "../../../lib/supabase";
-import { CategoryEventInsert, EventType, EventTypeInsert } from "../../../types/collection";
+import { CategoryEventInsert, EventType, EventTypeInsert, SubscriptionInsert } from "../../../types/collection";
 
 export async function get_service() {
     const { data, error } = await supabase
@@ -88,6 +88,29 @@ export async function create_event_categories(categoriesWithEventId: CategoryEve
     const { data, error } = await supabase
         .from("event_category")
         .insert(categoriesWithEventId)
+        .select();
+    if (error) {
+        throw error;
+    }
+    return data;
+}
+
+export async function createSubscription(data: SubscriptionInsert) {
+    const { data: subscription, error } = await supabase
+        .from("subscriptions")
+        .insert(data)
+        .select();
+    if (error) {
+        throw error;
+    }
+    return subscription;
+}
+
+export async function setSubscriptionFile(id:number, filename: string) {
+    const { data, error } = await supabase
+        .from("subscriptions")
+        .update({ filename: filename })
+        .eq("id", id)
         .select();
     if (error) {
         throw error;
